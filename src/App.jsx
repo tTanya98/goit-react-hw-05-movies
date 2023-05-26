@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Navigation from './components/navigation/Navigation';
 import { lazy, Suspense } from 'react';
 import Container from './components/container/Container';
