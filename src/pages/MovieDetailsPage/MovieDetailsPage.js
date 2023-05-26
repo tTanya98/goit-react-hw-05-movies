@@ -3,10 +3,10 @@ import { useState, useEffect, lazy, Suspense } from 'react';
 import {
   useParams,
   NavLink,
-  useRouteMatch,
+  useMatch,
   useLocation,
   useNavigate,
-  Switch,
+  Routes,
   Route,
 } from 'react-router-dom';
 import { getMovieDetails, IMAGE_URL } from '../../services/api';
@@ -24,7 +24,7 @@ export default function MovieDetailsPage() {
   const { movieId } = useParams();
   const history = useNavigate();
   const location = useLocation();
-  const { url, path } = useRouteMatch();
+  const { url, path } = useMatch();
 
   useEffect(() => {
     const getMovie = async () => {
@@ -94,7 +94,7 @@ export default function MovieDetailsPage() {
       </nav>
 
       <Suspense fallback={<Loader />}>
-        <Switch>
+        <Routes>
           <Route path={`${path}/cast`}>
             <MovieCastView movieId={movieId} />
           </Route>
@@ -102,7 +102,7 @@ export default function MovieDetailsPage() {
           <Route path={`${path}/reviews`}>
             <MovieReview movieId={movieId} />
           </Route>
-        </Switch>
+        </Routes>
       </Suspense>
     </>
   );
