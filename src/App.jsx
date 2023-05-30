@@ -1,45 +1,31 @@
-import { Routes, Route } from 'react-router-dom';
-import Navigation from './components/navigation/Navigation';
-import { lazy, Suspense } from 'react';
-import Container from './components/container/Container';
-import Loader from 'components/loader/Loader';
+import { Routes, Route, Navigate } from 'react-router-dom'; // додаємо маршрутизацію
+import { lazy } from 'react';
+import { Toaster } from 'react-hot-toast'; 
 
-const HomePage = lazy(() =>
-  import('./pages/HomePage')
-);
-const MoviesPage = lazy(() =>
-  import('./pages/MoviesPage')
-);
-const MovieDetailsPage = lazy(() =>
-  import(
-    './pages/MovieDetailsPage/MovieDetailsPage'
-  )
-);
-const NotFoundView = lazy(() =>
-  import('./pages/NotFound')
-);
+const SharedLayout = lazy(() => import('./components/SharedLayout/SharedLayout')); 
+const Home = lazy(() => import('./pages/Home'));
+const Movies = lazy(() => import('./pages/Movies'));
+const MovieDetails = lazy(() => import('./pages/MovieDetails'));
+const Cast = lazy(() => import('./components/Cast/Cast'));
+const Reviews = lazy(() => import('./components/Reviews/Reviews'));
 
-export default function App() {
+export const App = () => {
   return (
-    <Container>
-      <Navigation />
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route exact path="/">
-            <HomePage />
-          </Route>
-          <Route exact path="/movies">
-            <MoviesPage />
-          </Route>
-          <Route path="/movies/:movieId">
-            <MovieDetailsPage />
-          </Route>
+    <>
+      <Routes>
+        <Route path="/" element={<SharedLayout />}>
+          <Route index element={<Home />} />
+          <Route path="movies" element={<Movies />} />
 
-          <Route>
-            <NotFoundView path="*" />
+          <Route path="movies/:movieId" element={<MovieDetails />}>
+            <Route path="cast" element={<Cast />} />
+            <Route path="reviews" element={<Reviews />} />
           </Route>
-        </Routes>
-      </Suspense>
-    </Container>
+          <Route path="*" element={<Navigate to="/" />} />
+        </Route>
+      </Routes>
+      <Toaster /> 
+    </>
   );
-}
+};
+
